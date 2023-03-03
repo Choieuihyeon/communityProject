@@ -1,5 +1,6 @@
-package com.zerobase.communityproject;
+package com.zerobase.communityproject.configuration;
 
+import com.zerobase.communityproject.CommunityprojectApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
