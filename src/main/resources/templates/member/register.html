@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>회원 가입</title>
+</head>
+<body>
+<h1>회원 가입</h1>
+<div th:replace="/fragments/layout.html :: fragment-body-menu"></div>
+
+<!--
+// 아이디(이메일), 이름, 비밀번호, 성별
+-->
+
+<form method="post">
+  <div>
+    <input type="email" name="userId" placeholder="아이디(이메일) 입력" required/>
+  </div>
+  <div>
+    <input type="text" name="userName" placeholder="이름 입력" required/>
+  </div>
+  <div>
+    <input type="password" name="password" placeholder="비밀번호 입력" required/>
+  </div>
+  <div>
+    <input type="password" name="rePassword" placeholder="확인 비밀번호 입력" required/>
+  </div>
+  <div>
+    <input type="text" name="gender" maxlength="1" placeholder="성별 입력('남'=남자, '여'=여자)" required/>
+  </div>
+
+
+  <div>
+    <button type="submit">회원 가입 하기</button>
+  </div>
+</form>
+
+
+</body>
+</html>
