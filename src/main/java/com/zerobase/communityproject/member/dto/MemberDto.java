@@ -24,8 +24,8 @@ public class MemberDto {
 	boolean adminYn;
 
 	// 추가컬럼
-	//long totalCount;	게시물 목록 조회수 카운트
-	//long seq;
+	long totalCount;    //게시물 목록 카운트
+	long seq;    // 순번
 
 	public static MemberDto of(Member member) {
 

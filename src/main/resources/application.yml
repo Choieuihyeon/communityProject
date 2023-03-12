@@ -11,3 +11,9 @@ spring:
       ddl-auto: update
     show-sql: true
 
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
