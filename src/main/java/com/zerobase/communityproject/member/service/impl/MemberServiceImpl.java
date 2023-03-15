@@ -89,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
 
 		Optional<Member> optionalMember = memberRepository.findById(userId);
 		if (!optionalMember.isPresent()) {
-			return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+			throw new UsernameNotFoundException("회원 정보가 존재하지 않습니다.");
 		}
 
 		Member member = optionalMember.get();
