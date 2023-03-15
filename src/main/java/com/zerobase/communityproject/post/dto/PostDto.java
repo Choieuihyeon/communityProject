@@ -4,6 +4,7 @@ import com.zerobase.communityproject.post.entity.Post;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,7 +62,7 @@ public class PostDto {
 			}
 			return postList;
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 

@@ -10,6 +10,7 @@ import com.zerobase.communityproject.post.service.PostService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -158,7 +159,7 @@ public class PostServiceImpl implements PostService {
 		if (optionalPosts.isPresent()) {
 			return (List<PostDto>) PostDto.of(optionalPosts.get());
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
