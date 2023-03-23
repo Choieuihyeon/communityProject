@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-@Entity (name = "post")
+@Entity(name = "post")
 public class Post {
 
 	@Id
@@ -26,5 +26,4 @@ public class Post {
 	private String contents;    // 게시물 상세 내용
 	private LocalDateTime registeredAt;    // 게시물 등록일
 	private LocalDateTime modifiedAt;    // 게시물 수정일
-
 }

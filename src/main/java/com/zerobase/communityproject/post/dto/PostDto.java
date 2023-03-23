@@ -64,7 +64,5 @@ public class PostDto {
 		}
 		return Collections.emptyList();
 	}
-
-
 }
 

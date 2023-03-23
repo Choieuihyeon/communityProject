@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>게시물 목록</title>
+  <title>내 게시물 목록</title>
   <style>
     .list table {
       width: 100%;
@@ -52,9 +52,9 @@
 
   </style>
 
-  <script src="https://code.jquery.com/jquery-3.6.3.min.js"
-          integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
-          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
   <script>
     $(document).ready(function () {
 
@@ -68,12 +68,38 @@
 
       });
 
+      $('#deleteButton').on('click', function () {
+
+        var $checked = $('#dataList input[type=checkbox]:checked');
+        if ($checked.length < 1) {
+          alert(' 삭제할 게시물을 선택해 주세요.');
+          return false;
+        }
+
+        if (!confirm(' 선택한 게시물을 삭제하시겠습니까? ')) {
+          return false;
+        }
+
+        var idList = [];
+        $.each($checked, function (k, v) {
+          idList.push($(this).val());
+        });
+
+        console.log(idList);
+        console.log(idList.join(','));
+
+        var $deleteForm = $('form[name=deleteForm]');
+        $deleteForm.find('input[name=idList]').val(idList.join(','));
+        $deleteForm.submit();
+
+      });
+
     });
   </script>
 </head>
 <body>
 
-<h1>게시물 목록</h1>
+<h1>내 게시물 목록</h1>
 <div th:replace="/fragments/layout.html :: fragment-body-menu"></div>
 
 <div class="list">
@@ -88,16 +114,12 @@
         </option>
         <option th:selected="${#strings.equals(param.searchType, 'contents')}" value="contents">내용
         </option>
-        <option th:selected="${#strings.equals(param.searchType, 'userId')}" value="userId">작성자
-        </option>
       </select>
 
       <input th:value="${param.searchValue}" type="search" name="searchValue" placeholder="검색어 입력"/>
       <button type="submit">검색</button>
     </form>
-
-
-    <a href="/post/add"> 게시물 등록 </a>
+      <button id="deleteButton" type="button">선택 삭제</button>
   </div>
 
 
@@ -117,30 +139,25 @@
       <th>
         등록일
       </th>
-      <th>
-        수정일
-      </th>
+
     </tr>
     </thead>
     <tbody id="dataList">
-    <tr th:each="x : ${list}">
+    <tr th:each="x, i : ${myPost}">
       <td>
         <input type="checkbox" th:value="${x.id}"/>
       </td>
-      <td th:text="${x.seq}">1</td>
+      <td th:text="${i.index + 1}">1</td>
+
       <td>
-        <p>
-          <a th:href="'detail/' + ${x.id}" th:text="${x.title}">제목</a>
-        </p>
+        <a th:href="'update/' + ${x.id}" th:text="${x.title}">
+          안녕하세요 </a>
       </td>
       <td>
-        <p th:text="${x.userId}">아이디</p>
+        <p th:text="${x.userId}"></p>
       </td>
       <td>
-        <p th:text="${x.registeredAt}">2023.03.09</p>
-      </td>
-      <td>
-        <p th:text="${x.modifiedAt}">2023.03.09</p>
+        <p th:text="${x.registeredAt}">2023.03.17</p>
       </td>
     </tr>
     </tbody>
@@ -152,6 +169,7 @@
   <form name="deleteForm" method="post" action="/post/delete">
     <input type="hidden" name="idList"/>
   </form>
+
 </div>
 </body>
 </html>
