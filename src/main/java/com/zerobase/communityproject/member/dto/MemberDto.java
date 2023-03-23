@@ -3,6 +3,8 @@ package com.zerobase.communityproject.member.dto;
 import com.zerobase.communityproject.member.entity.Member;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,5 +47,16 @@ public class MemberDto {
 		return registeredAt != null ? registeredAt.format(formatter) : "";
 	}
 
+	public static List<MemberDto> of(List<Member> members) {
 
+		if (members == null) {
+			return null;
+		}
+
+		List<MemberDto> memberList = new ArrayList<>();
+		for (Member x : members) {
+			memberList.add(MemberDto.of(x));
+		}
+		return memberList;
+	}
 }
