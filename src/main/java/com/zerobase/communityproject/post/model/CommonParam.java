@@ -47,5 +47,4 @@ public class CommonParam {
 		}
 		return sb.toString();
 	}
-
 }
