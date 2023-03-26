@@ -1,6 +1,8 @@
 package com.zerobase.communityproject.member.service.impl;
 
 import com.zerobase.communityproject.common.model.components.MailComponents;
+import com.zerobase.communityproject.exception.CustomException;
+import com.zerobase.communityproject.exception.ErrorCode;
 import com.zerobase.communityproject.member.dto.MemberDto;
 import com.zerobase.communityproject.member.entity.Member;
 import com.zerobase.communityproject.member.mapper.MemberMapper;
@@ -9,11 +11,9 @@ import com.zerobase.communityproject.member.model.MemberParam;
 import com.zerobase.communityproject.member.model.ResetPasswordInput;
 import com.zerobase.communityproject.member.repository.MemberRepository;
 import com.zerobase.communityproject.member.service.MemberService;
-import com.zerobase.communityproject.post.model.ServiceResult;
 import com.zerobase.communityproject.util.PasswordUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -92,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public ServiceResult updateMember(MemberInput parameter) {
+	public CustomException updateMember(MemberInput parameter) {
 
 		String userId = parameter.getUserId();
 
@@ -106,7 +106,7 @@ public class MemberServiceImpl implements MemberService {
 		member.setRegisteredAt(LocalDateTime.now());
 		memberRepository.save(member);
 
-		return new ServiceResult();
+		return new CustomException(ErrorCode.OK);
 	}
 
 	@Override
@@ -172,40 +172,40 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public ServiceResult updateMemberPassword(MemberInput parameter) {
+	public CustomException updateMemberPassword(MemberInput parameter) {
 
 		String userId = parameter.getUserId();
 
 		Optional<Member> optionalMember = memberRepository.findById(userId);
 		if (!optionalMember.isPresent()) {
-			return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+			return new CustomException(ErrorCode.MEMBER_NOT_EXIT);
 		}
 
 		Member member = optionalMember.get();
 
 		if (!PasswordUtils.equals(parameter.getPassword(), member.getPassword())) {
-			return new ServiceResult(false, "비밀번호가 일치하지 않습니다.");
+			return new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
 		}
 
 		String encPassword = PasswordUtils.encPassword(parameter.getNewPassword());
 		member.setPassword(encPassword);
 		memberRepository.save(member);
 
-		return new ServiceResult(true);
+		return new CustomException(ErrorCode.OK);
 	}
 
 	@Override
-	public ServiceResult withdraw(String userId, String password) {
+	public CustomException withdraw(String userId, String password) {
 
 		Optional<Member> optionalMember = memberRepository.findById(userId);
 		if (!optionalMember.isPresent()) {
-			return new ServiceResult(false, "회원 정보가 존재하지 않습니다.");
+			return  new CustomException(ErrorCode.MEMBER_NOT_EXIT);
 		}
 
 		Member member = optionalMember.get();
 
 		if (!PasswordUtils.equals(password, member.getPassword())) {
-			return new ServiceResult(false, "비밀번호가 일치하지 않습니다.");
+			return new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
 		}
 
 		member.setUserName("삭제회원");
@@ -214,7 +214,7 @@ public class MemberServiceImpl implements MemberService {
 		member.setRegisteredAt(null);
 		memberRepository.save(member);
 
-		return new ServiceResult();
+		return new CustomException(ErrorCode.OK);
 	}
 
 	@Override
