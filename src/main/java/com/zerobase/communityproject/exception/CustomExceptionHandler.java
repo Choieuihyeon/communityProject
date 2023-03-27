@@ -18,6 +18,7 @@ public class CustomExceptionHandler {
 			.build();
 
 		return ResponseEntity.status(e.getErrorCode().getStatus()).body(errorResponse);
+
 	}
 
 
