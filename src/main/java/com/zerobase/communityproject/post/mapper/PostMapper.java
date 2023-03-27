@@ -12,4 +12,8 @@ public interface PostMapper {
 
 	List<PostDto> selectList(PostParam parameter);
 
+	List<PostDto> selectListMyPost(PostParam parameter);
+
+
+	long selectListMyPostCount(PostParam parameter);
 }

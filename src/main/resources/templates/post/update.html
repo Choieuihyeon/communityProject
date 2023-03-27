@@ -49,10 +49,11 @@
 </head>
 <body>
 
-<h1>게시물 등록</h1>
+<h1>게시물 수정</h1>
 <div th:replace="/fragments/layout.html :: fragment-body-menu"></div>
 
 <div class="detail">
+  <div class="buttons">
 
   <form id="submitForm" method="post" enctype="multipart/form-data">
 
@@ -63,8 +64,7 @@
           제목
         </th>
         <td>
-          <textarea th:text="${detail.title}" id="title" name="title" required
-                    placeholder="제목 입력"/></textarea>
+          <textarea th:text="${post.title}" id="title" name="title"/></textarea>
         </td>
       </tr>
       <tr>
@@ -72,17 +72,29 @@
           내용
         </th>
         <td>
-          <textarea th:text="${detail.contents}" id="contents" name="contents"
+          <textarea th:text="${post.contents}" id="contents" name="contents"
                     placeholder="내용 입력"/></textarea>
+        </td>
+        <th>
+          작성자
+        </th>
+        <td th:text="${post.userId}">
+          ceh201312@naver.com
+        </td>
+        <th>
+          등록일
+        </th>
+        <td th:text="${post.registeredAt}">
+          2023.03.18
         </td>
       </tr>
 
       </tbody>
     </table>
 
+
     <div class="buttons">
-      <button th:if="${editMode}" type="submit"> 게시물 수정 하기</button>
-      <button th:if="${!editMode}" type="submit"> 게시물 등록 하기</button>
+      <button type="submit"> 게시물 수정 하기</button>
       <a href="/post/list"> 목록 이동 </a>
     </div>
 

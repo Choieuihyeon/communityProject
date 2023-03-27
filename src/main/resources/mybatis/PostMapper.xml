@@ -7,6 +7,9 @@
   <sql id="selectListWhere">
     <if test="searchType != null and searchValue != null">
       <choose>
+        <when test="searchType == 'userId'">
+          and user_id like concat('%', #{searchValue}, '%')
+        </when>
         <when test="searchType == 'title'">
           and title like concat('%', #{searchValue}, '%')
         </when>
@@ -16,6 +19,8 @@
         <otherwise>
           and
           (
+          user_id like concat('%', #{searchValue}, '%')
+          or
           title like concat('%', #{searchValue}, '%')
           or
           contents like concat('%', #{searchValue}, '%')
@@ -44,5 +49,31 @@
     limit #{pageStart}, #{pageEnd}
 
   </select>
+
+  <select id="selectListMyPostCount" resultType="long">
+    select count(*)
+    from post
+    where user_id = #{userId}
+  </select>
+
+  <!-- userId에 해당하는 게시물 정보 -->
+  <select id="selectListMyPost" resultType="com.zerobase.communityproject.post.dto.PostDto">
+    select p.*
+    from post p
+    join member m on m.user_id = p.user_id
+    where p.user_id = #{userId}
+  </select>
+
+  <!--
+  <update id="updateMyPost" parameterType="com.zerobase.communityproject.post.dto.PostDto">
+    update post
+    set title = #{title},
+    contents = #{contents},
+    modified_at = now()
+    where id = {id}
+  </update>
+  -->
+
+
 
 </mapper>

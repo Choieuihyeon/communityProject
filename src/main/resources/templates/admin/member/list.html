@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>관리자 확인</title>
+  <title>회원 관리</title>
   <style>
     .list table {
       width: 100%;
@@ -40,7 +40,7 @@
 </head>
 <body>
 
-<h1>관리자 회원 관리</h1>
+<h1>회원 목록</h1>
 <div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>
 
 <div class="list">
@@ -80,17 +80,13 @@
       <th>
         관리자 여부
       </th>
-      <th>
-        마지막 로그인 날짜
-      </th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="x : ${list}">
       <td th:text="${x.seq}">1</td>
       <td>
-        <a th:text="${x.userId}"
-           th:href="${'detail.do?userId=' + x.userId}">
+        <a th:href="'detail/' + ${x.userId}" th:text="${x.userId}">
           ceh201312@naver.com </a>
       </td>
       <td th:text="${x.userName}">홍길동</td>
@@ -101,9 +97,6 @@
       <td>
         <p th:if="${x.adminYn}">Y</p>
         <p th:if="${x.adminYn eq false}">N</p>
-      </td>
-      <td>
-        <p th:text="${x.registeredAt}">2023.03.09</p>
       </td>
     </tr>
     </tbody>

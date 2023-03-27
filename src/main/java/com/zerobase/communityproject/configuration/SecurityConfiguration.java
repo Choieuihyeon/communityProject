@@ -48,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers(
 				"/"
 				, "/member/register"
-				, "/member/email-auth"
+				, "/post/list"
 				, "/member/find/password"
 				, "/member/reset/password"
 			)
@@ -81,5 +81,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		super.configure(auth);
 	}
-
 }

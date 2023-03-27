@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Entity (name = "member")
+@Entity(name = "member")
 public class Member {
 
 	@Id
@@ -26,5 +26,7 @@ public class Member {
 	private LocalDateTime registeredAt;    // 유저 등록일
 	private boolean adminYn;    // 관리자 여부
 
-
+	// 새로 추가
+	private String resetPasswordKey;
+	private LocalDateTime resetPasswordLimitDt;
 }

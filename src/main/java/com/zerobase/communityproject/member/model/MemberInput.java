@@ -11,4 +11,6 @@ public class MemberInput {
 	private String userName;
 	private String password;
 	private String gender;
+	private String newPassword;
+
 }

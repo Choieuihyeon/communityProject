@@ -13,7 +13,5 @@ public class PostInput {
 	private String contents;
 
 	// 삭제를 위한 속성
-	private String idList;
-
-
+	String idList;
 }

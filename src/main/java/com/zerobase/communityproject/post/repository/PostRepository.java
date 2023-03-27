@@ -9,6 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
 	Optional<Post> findByTitle(String title);
-
-	Optional<Post> deleteByTitle(String title);
 }

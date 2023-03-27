@@ -7,10 +7,10 @@ import com.zerobase.communityproject.post.model.PostInput;
 import com.zerobase.communityproject.post.model.PostParam;
 import com.zerobase.communityproject.post.repository.PostRepository;
 import com.zerobase.communityproject.post.service.PostService;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -25,23 +25,13 @@ public class PostServiceImpl implements PostService {
 	private final PostRepository postRepository;
 	private final PostMapper postMapper;
 
-
-	private LocalDate getLocalDate(String value) {
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		try {
-			return LocalDate.parse(value, formatter);
-		} catch (Exception e) {
-		}
-		return null;
-	}
-
 	@Override
-	public boolean add(PostInput parameter) {
+	public boolean add(PostInput parameter, Principal principal) {
+		String userId = principal.getName();
 
 		Post post = Post.builder()
 			.id(parameter.getId())
-			.userId(parameter.getUserId())
+			.userId(userId)
 			.title(parameter.getTitle())
 			.contents(parameter.getContents())
 			.registeredAt(LocalDateTime.now())
@@ -58,15 +48,12 @@ public class PostServiceImpl implements PostService {
 
 		Optional<Post> optionalPost = postRepository.findById(parameter.getId());
 		if (!optionalPost.isPresent()) {
-			// 수정할 데이터가 없음
 			return false;
 		}
 
 		Post post = optionalPost.get();
-		post.setUserId(parameter.getUserId());
 		post.setTitle(parameter.getTitle());
 		post.setContents(parameter.getContents());
-		post.setRegisteredAt(LocalDateTime.now());
 		post.setModifiedAt(LocalDateTime.now());
 		postRepository.save(post);
 
@@ -91,16 +78,9 @@ public class PostServiceImpl implements PostService {
 		return list;
 	}
 
-
-	@Override
-	public List<PostDto> listAll() {
-
-		List<Post> postList = postRepository.findAll();
-		return PostDto.of(postList);
-	}
-
 	@Override
 	public boolean delete(String idList) {
+
 		if (idList != null && idList.length() > 0) {
 
 			String[] ids = idList.split(",");
@@ -116,7 +96,6 @@ public class PostServiceImpl implements PostService {
 				}
 			}
 		}
-
 		return false;
 	}
 
@@ -138,28 +117,12 @@ public class PostServiceImpl implements PostService {
 	public List<PostDto> list() {
 		List<Post> posts = postRepository.findAll(getSortBySortValueDesc());
 		return PostDto.of(posts);
-
 	}
 
 	@Override
 	public PostDto getById(long id) {
 
 		return postRepository.findById(id).map(PostDto::of).orElse(null);
-	}
-
-	@Override
-	public List<PostDto> frontList(PostParam parameter) {
-
-		if (parameter.getId() < 1) {
-			List<Post> postList = postRepository.findAll();
-			return PostDto.of(postList);
-		}
-
-		Optional<Post> optionalPosts = postRepository.findById(parameter.getId());
-		if (optionalPosts.isPresent()) {
-			return (List<PostDto>) PostDto.of(optionalPosts.get());
-		}
-		return Collections.emptyList();
 	}
 
 	@Override
@@ -173,9 +136,22 @@ public class PostServiceImpl implements PostService {
 		Post post = optionalPost.get();
 
 		return PostDto.of(post);
-
 	}
 
+	// 나의 정보만 볼 수 있는 것
+	@Override
+	public List<PostDto> myPost(String userId) {
+
+		PostParam parameter = new PostParam();
+
+		parameter.setUserId(userId);
+
+		long totalCount = postMapper.selectListMyPostCount(parameter);
+
+		List<PostDto> list = postMapper.selectListMyPost(parameter);
+
+		return list;
+	}
 
 }
 
