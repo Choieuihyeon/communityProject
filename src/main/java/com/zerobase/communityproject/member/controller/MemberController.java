@@ -1,11 +1,11 @@
 package com.zerobase.communityproject.member.controller;
 
+import com.zerobase.communityproject.exception.CustomException;
 import com.zerobase.communityproject.member.dto.MemberDto;
 import com.zerobase.communityproject.member.model.MemberInput;
 import com.zerobase.communityproject.member.model.ResetPasswordInput;
 import com.zerobase.communityproject.member.service.MemberService;
 import com.zerobase.communityproject.post.model.ServiceResult;
-import com.zerobase.communityproject.post.service.PostService;
 import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -66,11 +66,7 @@ public class MemberController {
 		String userId = principal.getName();
 		parameter.setUserId(userId);
 
-		ServiceResult result = memberService.updateMember(parameter);
-		if (!result.isResult()) {
-			model.addAttribute("message", result.getMessage());
-			return "common/error";
-		}
+		CustomException result = memberService.updateMember(parameter);
 
 		return "redirect:/member/info";
 	}
@@ -117,11 +113,8 @@ public class MemberController {
 		String userId = principal.getName();
 		parameter.setUserId(userId);
 
-		ServiceResult result = memberService.updateMemberPassword(parameter);
-		if (!result.isResult()) {
-			model.addAttribute("message", result.getMessage());
-			return "common/error";
-		}
+		CustomException result = memberService.updateMemberPassword(parameter);
+
 		return "redirect:/member/info";
 	}
 
@@ -166,11 +159,8 @@ public class MemberController {
 
 		String userId = principal.getName();
 
-		ServiceResult result = memberService.withdraw(userId, parameter.getPassword());
-		if (!result.isResult()) {
-			model.addAttribute("message", result.getMessage());
-			return "common/error";
-		}
+		CustomException result = memberService.withdraw(userId, parameter.getPassword());
+
 		return "redirect:/member/logout";
 	}
 }
